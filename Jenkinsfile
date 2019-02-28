@@ -29,7 +29,7 @@ node {
 
     stage("Build dockers") {
         tryStep "build", {
-        docker.withRegistry('https://repo.secure.amsterdam.nl','docker-registry') {
+        docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
 	        def api = docker.build("datapunt/mapitout-backend:${env.BUILD_NUMBER}", "api")
                     api.push()
                     api.push("acceptance")
@@ -45,7 +45,7 @@ if (BRANCH == "master") {
     node {
         stage('Push acceptance image') {
             tryStep "image tagging", {
-               docker.withRegistry('https://repo.secure.amsterdam.nl','docker-registry') {
+               docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
                     def image = docker.image("datapunt/mapitout-backend:${env.BUILD_NUMBER}")
                     image.pull()
                     image.push("acceptance")
@@ -73,7 +73,7 @@ if (BRANCH == "master") {
     node {
         stage('Push production image') {
             tryStep "image tagging", {
-                docker.withRegistry('https://repo.secure.amsterdam.nl','docker-registry') {
+                docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
                     def api = docker.image("datapunt/mapitout-backend:${env.BUILD_NUMBER}")
                     api.push("production")
                     api.push("latest")
