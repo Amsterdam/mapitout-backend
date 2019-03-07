@@ -29,7 +29,7 @@ node {
 
     stage("Build dockers") {
         tryStep "build", {
-	        def api = docker.build("build.app.amsterdam.nl:5000/ois/mapitout_backend:${env.BUILD_NUMBER}", "api")
+	        def api = docker.build("https://build.app.amsterdam.nl:5000/ois/mapitout_backend:${env.BUILD_NUMBER}", "api")
                     api.push()
                     api.push("acceptance")
             }
@@ -43,7 +43,7 @@ if (BRANCH == "master") {
     node {
         stage('Push acceptance image') {
             tryStep "image tagging", {
-                    def image = docker.image("build.app.amsterdam.nl:5000/ois/mapitout_backend:${env.BUILD_NUMBER}")
+                    def image = docker.image("https://build.app.amsterdam.nl:5000/ois/mapitout_backend:${env.BUILD_NUMBER}")
                     image.pull()
                     image.push("acceptance")
                 
@@ -70,7 +70,7 @@ if (BRANCH == "master") {
     node {
         stage('Push production image') {
             tryStep "image tagging", {
-                    def api = docker.image("build.app.amsterdam.nl:5000/ois/mapitout_backend:${env.BUILD_NUMBER}")
+                    def api = docker.image("https://build.app.amsterdam.nl:5000/ois/mapitout_backend:${env.BUILD_NUMBER}")
                     api.push("production")
                     api.push("latest")
                 
