@@ -29,12 +29,10 @@ node {
 
     stage("Build dockers") {
         tryStep "build", {
-        docker.withRegistry('https://build.app.amsterdam.nl','docker-registry') {
-	        def api = docker.build("ois/mapitout_backend:${env.BUILD_NUMBER}", "api")
+	        def api = docker.build("build.app.amsterdam.nl:5000/ois/mapitout_backend:${env.BUILD_NUMBER}", "api")
                     api.push()
                     api.push("acceptance")
             }
-        }
     }
 }
 
@@ -45,11 +43,10 @@ if (BRANCH == "master") {
     node {
         stage('Push acceptance image') {
             tryStep "image tagging", {
-               docker.withRegistry('https://build.app.amsterdam.nl','docker-registry') {
-                    def image = docker.image("ois/mapitout_backend:${env.BUILD_NUMBER}")
+                    def image = docker.image("build.app.amsterdam.nl:5000/ois/mapitout_backend:${env.BUILD_NUMBER}")
                     image.pull()
                     image.push("acceptance")
-                }
+                
             }
         }
     }
@@ -73,11 +70,10 @@ if (BRANCH == "master") {
     node {
         stage('Push production image') {
             tryStep "image tagging", {
-                docker.withRegistry('https://build.app.amsterdam.nl','docker-registry') {
-                    def api = docker.image("ois/mapitout_backend:${env.BUILD_NUMBER}")
+                    def api = docker.image("build.app.amsterdam.nl:5000/ois/mapitout_backend:${env.BUILD_NUMBER}")
                     api.push("production")
                     api.push("latest")
-                }
+                
             }
         }
     }
