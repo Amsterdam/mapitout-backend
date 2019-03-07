@@ -5,7 +5,7 @@ def tryStep(String message, Closure block, Closure tearDown = null) {
         block();
     }
     catch (Throwable t) {
-        slackSend message: "${env.JOB_NAME}: ${message} failure ${env.BUILD_URL}", channel: '#mapitout_backend', color: 'danger'
+        slackSend message: "${env.JOB_NAME}: ${message} failure ${env.BUILD_URL}", channel: '#ci-channel', color: 'danger'
         throw t;
     }
     finally {
@@ -29,8 +29,8 @@ node {
 
     stage("Build dockers") {
         tryStep "build", {
-        docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
-	        def api = docker.build("datapunt/mapitout_backend:${env.BUILD_NUMBER}", "api")
+        docker.withRegistry('https://build.app.amsterdam.nl','docker-registry') {
+	        def api = docker.build("ois/mapitout_backend:${env.BUILD_NUMBER}", "api")
                     api.push()
                     api.push("acceptance")
             }
@@ -45,8 +45,8 @@ if (BRANCH == "master") {
     node {
         stage('Push acceptance image') {
             tryStep "image tagging", {
-               docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
-                    def image = docker.image("datapunt/mapitout_backend:${env.BUILD_NUMBER}")
+               docker.withRegistry('https://build.app.amsterdam.nl','docker-registry') {
+                    def image = docker.image("ois/mapitout_backend:${env.BUILD_NUMBER}")
                     image.pull()
                     image.push("acceptance")
                 }
@@ -73,8 +73,8 @@ if (BRANCH == "master") {
     node {
         stage('Push production image') {
             tryStep "image tagging", {
-                docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
-                    def api = docker.image("datapunt/mapitout_backend:${env.BUILD_NUMBER}")
+                docker.withRegistry('https://build.app.amsterdam.nl','docker-registry') {
+                    def api = docker.image("ois/mapitout_backend:${env.BUILD_NUMBER}")
                     api.push("production")
                     api.push("latest")
                 }
