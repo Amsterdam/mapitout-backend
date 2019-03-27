@@ -4,7 +4,7 @@ import db_helper
 import json
 # import geojson
 # from geoalchemy.shape import from_shape
-from flask import request, Response, jsonify
+from flask import request, Response
 from models import Poi, PoiType, PoiProperty, PoiPropertyRelation
 from sqlalchemy import func
 from sqlalchemy.ext.declarative import DeclarativeMeta
@@ -107,7 +107,10 @@ def handle_poi_request(url, req: request):
     keys = data.keys()
     if keys and len(keys) > 0:
         session = db_helper.session
-        q = session.query(Poi).join(PoiType, Poi.poi_type_id == PoiType.id)
+        q = session.query(
+            Poi, func.ST_AsGeoJSON(Poi.geo_location)
+        ).join(PoiType, Poi.poi_type_id == PoiType.id)
+
         for k in keys:
             if k not in CMD_MAP:
                 return f'Unsupported cmd: {data}'
