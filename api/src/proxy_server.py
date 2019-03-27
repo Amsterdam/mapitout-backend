@@ -12,6 +12,8 @@ logging.basicConfig(level=logging.DEBUG, format='%(message)s')
 log = logging.getLogger(__name__)
 log.setLevel(logging.ERROR)
 
+PREFIX = '/api'
+
 auth_headers = {
         'X-Application-Id': environ.get('APP_ID', 'test'),
         'X-Api-Key': environ.get('APP_KEY', 'test'),
@@ -28,17 +30,17 @@ def proxy_to_source(url):
     return url
 
 
-@app.route('/')
+@app.route(f'{PREFIX}/')
 def root():
     return '.'
 
 
-@app.route('/metrics',  methods=['GET', 'POST'])
+@app.route(f'{PREFIX}/metrics',  methods=['GET', 'POST'])
 def metrics():
     return 'Alive'
 
 
-@app.route('/PoiApi/<path:url>', methods=['GET', 'POST'])
+@app.route(f'{PREFIX}/PoiApi/<path:url>', methods=['GET', 'POST'])
 def poi(url):
     try:
         if not request.is_json:
@@ -48,7 +50,7 @@ def poi(url):
         log.error(e)
 
 
-@app.route('/TravelTimeApi/<path:url>', methods=['GET', 'POST'])
+@app.route(f'{PREFIX}/TravelTimeApi/<path:url>', methods=['GET', 'POST'])
 def proxy(url):
     try:
         url = proxy_to_source(url)
