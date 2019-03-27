@@ -17,6 +17,6 @@ pip install -r requirements.txt
 ```
 export APP_ID=<id>
 export APP_KEY=<key>
-export FLASK_APP=proxy-server.py
+export FLASK_APP=proxy_server.py
 flask run
 ```
