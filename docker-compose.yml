@@ -4,12 +4,6 @@ services:
     image: amsterdam/postgres11
     ports:
       - "5432:5432"
-    environment:
-      - DATABASE_NAME=
-      - DATABASE_USER=
-      - DATABASE_PASSWORD=
-      - DATABASE_HOST=
-      - DATABASE_PORT=
     volumes:
       - ~/.ssh/datapunt.key:/root/.ssh/datapunt.key
   
