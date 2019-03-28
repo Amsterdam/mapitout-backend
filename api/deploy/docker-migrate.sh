@@ -6,5 +6,7 @@ set -x   # print what we are doing
 
 cd /app/
 
+set
+
 python models.py --drop
 psql -U $DATABASE_USER -h $DATABASE_HOST $DATABASE_NAME < /deploy/db/dump.sql
