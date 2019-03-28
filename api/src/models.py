@@ -58,11 +58,13 @@ class Poi(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     description = Column(String, nullable=True)
+    street = Column(String(length=255), nullable=True)
     postalcode = Column(String(length=10), nullable=True)
-    address = Column(String(length=255), nullable=True)
-    number = Column(String(length=15), nullable=True)
     city = Column(String(length=255), nullable=True)
-    geo_location = Column(Geometry('POINT', srid=4326), index=True)
+    website = Column(String(length=255), nullable=True)
+    geo_location = Column(
+        Geometry('POINT', srid=4326), index=True, nullable=True
+    )
     poi_type_id = Column(Integer, ForeignKey('poi_type.id'))
 
 
