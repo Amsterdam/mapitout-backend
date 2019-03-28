@@ -22,6 +22,11 @@ services:
     environment:
       - APP_ID=
       - APP_KEY=
+      - DATABASE_NAME=
+      - DATABASE_USER=
+      - DATABASE_PASSWORD=
+      - DATABASE_HOST=
+      - DATABASE_PORT=
       - UWSGI_HTTP=0.0.0.0:8001
       - UWSGI_MASTER=1
       - UWSGI_STATIC_INDEX=index.html
