@@ -32,8 +32,7 @@ class TestApi(unittest.TestCase):
         self.session.add(
             Poi(id=1, name='test poi',
                 postalcode='123ab',
-                address='street',
-                number='1',
+                street='street',
                 city='amsterdam',
                 geo_location=self.make_pt(-73.883573184, 40.751662187),
                 poi_type_id=1
@@ -63,7 +62,7 @@ class TestApi(unittest.TestCase):
         req.is_json = MagicMock(return_value=True)
 
         resp = handle_poi_request('', req)
-        self.assertEqual(resp.json['id'], 1)
+        self.assertEqual(resp.json[0]['id'], 1)
 
     def test_poi_type(self):
         data = {"poi_by_type": ["school"]}
@@ -72,7 +71,7 @@ class TestApi(unittest.TestCase):
         req.is_json = MagicMock(return_value=True)
 
         resp = handle_poi_request('', req)
-        self.assertEqual(resp.json['id'], 1)
+        self.assertEqual(resp.json[0]['id'], 1)
 
     def test_poi_property(self):
         data = {
@@ -83,7 +82,7 @@ class TestApi(unittest.TestCase):
         req.is_json = MagicMock(return_value=True)
 
         resp = handle_poi_request('', req)
-        self.assertEqual(resp.json['id'], 1)
+        self.assertEqual(resp.json[0]['id'], 1)
 
     def test_poi_name_and_type(self):
         data = {
@@ -95,7 +94,7 @@ class TestApi(unittest.TestCase):
         req.is_json = MagicMock(return_value=True)
 
         resp = handle_poi_request('', req)
-        self.assertEqual(resp.json['id'], 1)
+        self.assertEqual(resp.json[0]['id'], 1)
 
     def test_poi_in_polygon(self):
         data = {
@@ -140,4 +139,4 @@ class TestApi(unittest.TestCase):
         req.is_json = MagicMock(return_value=True)
 
         resp = handle_poi_request('', req)
-        self.assertEqual(resp.json['id'], 1)
+        self.assertEqual(resp.json[0]['id'], 1)
