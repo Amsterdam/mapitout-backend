@@ -1,17 +1,27 @@
 version: "2.0"
 services:
-  api:
-    build: ./api
+  database:
+    image: amsterdam/postgres11
     ports:
-      - "8001:8001"
+      - "5432:5432"
     environment:
-      - APP_ID=
-      - APP_KEY=
       - DATABASE_NAME=
       - DATABASE_USER=
       - DATABASE_PASSWORD=
       - DATABASE_HOST=
       - DATABASE_PORT=
+    volumes:
+      - ~/.ssh/datapunt.key:/root/.ssh/datapunt.key
+  
+  api:
+    build: ./api
+    ports:
+      - "8001:8001"
+    links:
+      - database
+    environment:
+      - APP_ID=
+      - APP_KEY=
       - UWSGI_HTTP=0.0.0.0:8001
       - UWSGI_MASTER=1
       - UWSGI_STATIC_INDEX=index.html
