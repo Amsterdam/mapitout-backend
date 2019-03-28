@@ -29,7 +29,7 @@ node {
 
     stage("Build dockers") {
         tryStep "build", {
-	        def api = docker.build("build.app.amsterdam.nl:5000/ois/mapitout_backend:${env.BUILD_NUMBER}", "--build-arg http_proxy=${JENKINS_HTTP_PROXY_STRING} --build-arg https_proxy=${JENKINS_HTTP_PROXY_STRING} api")
+	        def api = docker.build("build.app.amsterdam.nl:5000/ois/mapitout_backend:${env.BUILD_NUMBER}", "api")
                     api.push()
                     api.push("acceptance")
             }
