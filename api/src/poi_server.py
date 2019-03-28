@@ -8,6 +8,9 @@ from flask import request, Response
 from models import Poi, PoiType, PoiProperty, PoiPropertyRelation
 from sqlalchemy import func
 from sqlalchemy.ext.declarative import DeclarativeMeta
+from geoalchemy2.elements import WKBElement
+from geoalchemy2.shape import to_shape
+from shapely.geometry import mapping
 
 
 class AlchemyEncoder(json.JSONEncoder):
@@ -19,6 +22,11 @@ class AlchemyEncoder(json.JSONEncoder):
                     not x.startswith('_') and x != 'metadata')]:
                 data = obj.__getattribute__(field)
                 try:
+                    if isinstance(data, WKBElement):
+                        # to shape
+                        data = to_shape(data)
+                        # to geojson
+                        data = mapping(data)
                     # this will fail on non-encodable values
                     fields[field] = data
                     json.dumps(data)
@@ -108,7 +116,8 @@ def handle_poi_request(url, req: request):
     if keys and len(keys) > 0:
         session = db_helper.session
         q = session.query(
-            Poi, func.ST_AsGeoJSON(Poi.geo_location)
+            Poi
+            # ,func.ST_AsGeoJSON(Poi.geo_location)
         ).join(PoiType, Poi.poi_type_id == PoiType.id)
 
         for k in keys:
@@ -134,7 +143,8 @@ def json_response(query):
     # qry = debugprint(query)
     rows = query.limit(100).all()
     if rows:
-        raw = [json.dumps(row, cls=AlchemyEncoder) for row in rows]
+        raw = json.dumps(rows, cls=AlchemyEncoder)
+        # raw = [json.dumps(row, cls=AlchemyEncoder) for row in rows]
     else:
         raw = '{"response": "No results"}'
     resp = Response(raw,  mimetype='application/json')
