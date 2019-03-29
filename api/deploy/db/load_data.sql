@@ -91,3 +91,8 @@ INSERT INTO poi (name,  street, postalcode, city, website, description, poi_type
 INSERT INTO poi (name,  street, postalcode, city, website, description, poi_type_id) values ('European School The Hague','Houtrustweg 2','2566 HA','The Hague','www.eshthehague.nl','The European School the Hague (ages 4 to 18) is a European school offering the European Baccalaureate programme.', 2);INSERT INTO poi_property_relation(poi_id, prop_id) values(currval('poi_id_seq'), 2);
 INSERT INTO poi (name,  street, postalcode, city, website, description, poi_type_id) values ('The International School of The Hague  (ISH)','Wijndaelerduin 1','2554 BX ','The Hague','www.ishthehague.nl','The International School the Hague (ages 4 to 18) is a modern school offering the IP and IB Middle Years programmes, as well as an extensive extra-curricular schedule with a great focus on music.', 2);INSERT INTO poi_property_relation(poi_id, prop_id) values(currval('poi_id_seq'), 2);
 INSERT INTO poi (name,  street, postalcode, city, website, description, poi_type_id) values ('American International School of Rotterdam  (AISR)','Verhulstlaan 21','3055 WJ','Rotterdam','www.aisr.nl','The American International School of Rotterdam (ages 3 to 18) offers the International Primary, International Middle Years and the IB Diploma programmes, among others.', 2);INSERT INTO poi_property_relation(poi_id, prop_id) values(currval('poi_id_seq'), 2);
+
+
+INSERT INTO poi_property(id, name) values (3, 'Primary education');
+INSERT INTO poi_property(id, name) values (4, 'Secondary education');
+ALTER SEQUENCE poi_property_id_seq RESTART WITH 4;
