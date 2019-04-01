@@ -9,7 +9,7 @@ from sqlalchemy_utils.functions import (create_database, database_exists,
 
 from settings import ENVIRONMENT_OVERRIDES, config_auth
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.ERROR)
 LOG = logging.getLogger(__name__)
 
 Session = sessionmaker()
