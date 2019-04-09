@@ -115,8 +115,15 @@ def handle_poi_request(url, req: request):
     keys = data.keys()
     if keys and len(keys) > 0:
         session = db_helper.session
+        sq = session.query(
+            func.array_agg(PoiPropertyRelation.prop_id)
+        ).filter(
+            PoiPropertyRelation.poi_id == Poi.id
+        ).group_by(PoiPropertyRelation.poi_id).label('property')
+
         q = session.query(
-            Poi
+            Poi,
+            sq
             # ,func.ST_AsGeoJSON(Poi.geo_location)
         ).join(PoiType, Poi.poi_type_id == PoiType.id)
 
