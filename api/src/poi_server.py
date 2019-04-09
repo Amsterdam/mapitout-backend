@@ -141,7 +141,7 @@ def debugprint(statement, dialect=None, reindent=True):
 
 def json_response(query):
     # qry = debugprint(query)
-    rows = query.limit(100).all()
+    rows = query.all()
     if rows:
         raw = json.dumps(rows, cls=AlchemyEncoder)
         # raw = [json.dumps(row, cls=AlchemyEncoder) for row in rows]
