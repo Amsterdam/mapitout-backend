@@ -9,10 +9,11 @@ services:
   
   api:
     build: ./api
+    network_mode: host
     ports:
       - "8001:8001"
     links:
-      - database
+      - database      
     environment:
       - APP_ID=
       - APP_KEY=
