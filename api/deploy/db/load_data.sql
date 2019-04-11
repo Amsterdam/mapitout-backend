@@ -96,3 +96,24 @@ INSERT INTO poi (name,  street, postalcode, city, website, description, poi_type
 INSERT INTO poi_property(id, name) values (3, 'Primary education');
 INSERT INTO poi_property(id, name) values (4, 'Secondary education');
 ALTER SEQUENCE poi_property_id_seq RESTART WITH 4;
+
+
+INSERT INTO poi_property(id, name) values (5, 'railStation');
+INSERT INTO poi_property(id, name) values (6, 'combiTramBus');
+INSERT INTO poi_property(id, name) values (7, 'ferryPort');
+INSERT INTO poi_property(id, name) values (8, 'metroStation');
+INSERT INTO poi_property(id, name) values (9, 'combiMetroTram');
+INSERT INTO poi_property(id, name) values (10, 'onstreetTram');
+INSERT INTO poi_property(id, name) values (11, 'busStation');
+INSERT INTO poi_property(id, name) values (12, 'tramStation');
+INSERT INTO poi_property(id, name) values (13, 'other');
+INSERT INTO poi_property(id, name) values (14, 'onstreetBus');
+ALTER SEQUENCE poi_property_id_seq RESTART WITH 14;
+
+INSERT INTO poi_property_relation(poi_id, prop_id) 
+select p.id, prop.id
+from poi p, csv_stop_type t, poi_property prop
+where p.poi_type_id = 1 and p.name = t.stop_code
+and prop.name = t.stop_type;
+commit;
+
