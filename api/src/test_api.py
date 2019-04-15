@@ -40,15 +40,13 @@ class TestApi(unittest.TestCase):
         )
         self.session.commit()
 
-        self.session.add(
-            PoiProperty(id=1, name='basis school'),
-            PoiProperty(id=2, name='test prop')
-        )
+        self.session.add(PoiProperty(id=1, name='basis school'))
         self.session.commit()
-        self.session.add(
-            PoiPropertyRelation(poi_id=1, prop_id=1),
-            PoiPropertyRelation(poi_id=1, prop_id=2),
-        )
+        self.session.add(PoiProperty(id=2, name='test prop'))
+        self.session.commit()
+        self.session.add(PoiPropertyRelation(poi_id=1, prop_id=1))
+        self.session.commit()
+        self.session.add(PoiPropertyRelation(poi_id=1, prop_id=2))
         self.session.commit()
 
     def tearDown(self):
@@ -62,7 +60,7 @@ class TestApi(unittest.TestCase):
         req.is_json = MagicMock(return_value=True)
 
         resp = handle_poi_request('', req)
-        self.assertEqual(resp.json[0]['id'], 1)
+        self.assertEqual(resp.json[0][0]['id'], 1)
 
     def test_poi_type(self):
         data = {"poi_by_type": ["school"]}
@@ -71,7 +69,7 @@ class TestApi(unittest.TestCase):
         req.is_json = MagicMock(return_value=True)
 
         resp = handle_poi_request('', req)
-        self.assertEqual(resp.json[0]['id'], 1)
+        self.assertEqual(resp.json[0][0]['id'], 1)
 
     def test_poi_property(self):
         data = {
@@ -82,7 +80,7 @@ class TestApi(unittest.TestCase):
         req.is_json = MagicMock(return_value=True)
 
         resp = handle_poi_request('', req)
-        self.assertEqual(resp.json[0]['id'], 1)
+        self.assertEqual(resp.json[0][0]['id'], 1)
 
     def test_poi_name_and_type(self):
         data = {
@@ -94,7 +92,7 @@ class TestApi(unittest.TestCase):
         req.is_json = MagicMock(return_value=True)
 
         resp = handle_poi_request('', req)
-        self.assertEqual(resp.json[0]['id'], 1)
+        self.assertEqual(resp.json[0][0]['id'], 1)
 
     def test_poi_in_polygon(self):
         data = {
@@ -139,4 +137,4 @@ class TestApi(unittest.TestCase):
         req.is_json = MagicMock(return_value=True)
 
         resp = handle_poi_request('', req)
-        self.assertEqual(resp.json[0]['id'], 1)
+        self.assertEqual(resp.json[0][0]['id'], 1)

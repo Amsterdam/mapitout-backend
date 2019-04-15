@@ -96,9 +96,17 @@ def handle_poi_type(q, param):
 
 def handle_poi_by_property(q, data):
     if data:
-        q = q.join(PoiPropertyRelation, PoiPropertyRelation.poi_id == Poi.id)
-        q = q.join(PoiProperty, PoiProperty.id == PoiPropertyRelation.prop_id)
-        q = q.filter(PoiProperty.name.in_(data))
+        session = db_helper.session
+        sq = session.query(
+            PoiPropertyRelation.poi_id
+        ).join(
+            PoiProperty, PoiProperty.id == PoiPropertyRelation.prop_id
+        ).filter(
+            PoiProperty.name.in_(data)
+        ).group_by(
+            PoiPropertyRelation.poi_id
+        ).having(func.count(PoiPropertyRelation.poi_id) == len(data))
+        q = q.filter(Poi.id.in_(sq))
     return q
 
 
