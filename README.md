@@ -157,4 +157,4 @@ The primary and seconday schools insert statements have been created from the .x
 * insert new poi_property_relation (if needed)
 
 # API
-See example json in [test_api.py](api/test_api.py)
+See example json in [test_api.py](api/src/test_api.py)
