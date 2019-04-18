@@ -138,7 +138,7 @@ and prop.name = t.stop_type;
 
 ### International schools
 The international schools insert statements are located in
-[load_data.sql](../../deploy/db/load_data.sql)
+[load_data.sql](api/deploy/db/load_data.sql)
 
 ### Dutch schools
 The primary and seconday schools insert statements have been created from the .xls files available at https://duo.nl/open_onderwijsdata/databestanden/po/adressen/
@@ -146,7 +146,7 @@ The primary and seconday schools insert statements have been created from the .x
 [secondary_school.sql](api/deploy/db/secondary_school.sql)
 
 # Make dump for deploy
-[dump.sh](../../deploy/db/dump.sh) is used to create a [db.sql](api/deploy/db/db.sql) that will be loaded by the api.
+[dump.sh](api/deploy/db/dump.sh) is used to create a [db.sql](api/deploy/db/db.sql) that will be loaded by the api.
 
 # Populating new sources
 * new poi_type (if needed)
