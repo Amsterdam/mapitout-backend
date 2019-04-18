@@ -21,7 +21,7 @@ export FLASK_APP=proxy_server.py
 flask run
 ```
 
-#### Data model ####
+# Data model
 ```
      +--------------------------+                            
      |                          |                            
@@ -89,7 +89,6 @@ CREATE TABLE csv_stops (
 \COPY csv_stops FROM 'stops.txt' delimiter ',' csv header;
 ANALYZE VERBOSE csv_stops;
 
-BEGIN;
 INSERT INTO poi (name, description, geo_location, poi_type_id)
 SELECT DISTINCT ON (stop_code)
     stop_code,
@@ -100,10 +99,9 @@ FROM
     csv_stops
 WHERE
     stop_code is not null;
-COMMIT;
 ```
 The station type can be retrieved from http://data.ndovloket.nl/haltes/. The xml file
-is converted to csv using [convert_stops.py](../../deploy/db/convert_stops.py)
+is converted to csv using [convert_stops.py](api/deploy/db/convert_stops.py)
 
 ```
 DROP TABLE IF EXISTS csv_stop_type_tmp;
@@ -144,11 +142,11 @@ The international schools insert statements are located in
 
 ### Dutch schools
 The primary and seconday schools insert statements have been created from the .xls files available at https://duo.nl/open_onderwijsdata/databestanden/po/adressen/
-[primary_school.sql](../../deploy/db/primary_school.sql)
-[secondary_school.sql](../../deploy/db/secondary_school.sql)
+[primary_school.sql](api/deploy/db/primary_school.sql)
+[secondary_school.sql](api/deploy/db/secondary_school.sql)
 
 # Make dump for deploy
-[dump.sh](../../deploy/db/dump.sh) is used to create a [db.sql](../../deploy/db/db.sql) that will be loaded by the api.
+[dump.sh](../../deploy/db/dump.sh) is used to create a [db.sql](api/deploy/db/db.sql) that will be loaded by the api.
 
 # Populating new sources
 * new poi_type (if needed)
