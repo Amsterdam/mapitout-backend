@@ -1,10 +1,25 @@
 import requests
 import logging
 import db_helper
-
-from flask import Flask, request
+from flask import jsonify, Flask, request
 from os import environ
 from poi_server import handle_poi_request
+
+
+class InvalidUsage(Exception):
+    status_code = 400
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
 
 
 app = Flask(__name__)
@@ -40,6 +55,13 @@ def metrics():
     return 'Alive'
 
 
+@app.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
+
 @app.route(f'{PREFIX}/PoiApi/<path:url>', methods=['GET', 'POST'])
 def poi(url):
     try:
@@ -48,6 +70,7 @@ def poi(url):
         return handle_poi_request(url, request)
     except Exception as e:
         log.error(e)
+        raise InvalidUsage("Bad request", status_code=400)
 
 
 @app.route(f'{PREFIX}/TravelTimeApi/<path:url>', methods=['GET', 'POST'])
